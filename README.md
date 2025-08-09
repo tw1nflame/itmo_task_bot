@@ -39,52 +39,56 @@ JSON_DATA_FILE=itmo_programs_full.json
 LOG_LEVEL=INFO
 ```
 
-**Инструкция по запуску в poetry (рекомендуемый порядок):**
+**Инструкция по запуску через uv (рекомендуется):**
 
-1. Установка зависимостей через poetry:
-```bash
-poetry install
-```
-
-2. Активация виртуального окружения poetry:
-```bash
-poetry shell
-```
-
-3. Сначала выполните парсинг данных:
-```bash
-poetry run python scraper.py
-```
-Это создаст/обновит файл itmo_programs_full.json с актуальными данными.
-
-4. Затем постройте векторный индекс:
-```bash
-poetry run python build_index.py
-```
-Это создаст папку faiss_index/ с индексом для быстрого поиска.
-
-5. После этого можно запускать Telegram-бота:
-```bash
-poetry run python telegram_bot.py
-```
-
-> **Важно:**  Есть возможность запуска через run_full_pipeline.py, но это неоптимально — оптимальнее выполнять этапы по отдельности, чтобы каждый раз не запускать процесс парсинга и индексации векторного хранилища.
-
----
-**Альтернативная инструкция запуска через стандартное venv:**
-
-1. Создайте виртуальное окружение:
+1. Создайте виртуальное окружение с нужной версией Python (например, 3.11):
     ```bash
-    python -m venv venv
+    uv venv --python=3.11 .venv
     ```
 2. Активируйте окружение:
     - **Windows:**
       ```cmd
-      venv\Scripts\activate
+      .venv\Scripts\activate
       ```
     - **Linux/macOS:**
       ```bash
-      source venv/bin/activate
+      source .venv/bin/activate
+      ```
+3. Установите все зависимости из pyproject.toml:
+    ```bash
+    uv sync
+    ```
+4. Запустите парсинг данных:
+    ```bash
+    uv run python scraper.py
+    ```
+5. Постройте векторный индекс:
+    ```bash
+    uv run python build_index.py
+    ```
+6. Запустите Telegram-бота:
+    ```bash
+    uv run python telegram_bot.py
+    ```
+
+> **Примечание:** Все команды выполняются из корня проекта. Не забудьте скопировать .env.example в .env и заполнить переменные.
+> Можно также запускать run_full_pipeline.py, но рекомендуется выполнять этапы по отдельности для ускорения работы.
+
+---
+**Альтернативная инструкция через стандартный venv и pip:**
+
+1. Создайте виртуальное окружение:
+    ```bash
+    python -m venv .venv
+    ```
+2. Активируйте окружение:
+    - **Windows:**
+      ```cmd
+      .venv\Scripts\activate
+      ```
+    - **Linux/macOS:**
+      ```bash
+      source .venv/bin/activate
       ```
 3. Установите зависимости:
     ```bash
@@ -104,7 +108,6 @@ poetry run python telegram_bot.py
     ```
 
 > **Примечание:** Все команды выполняются из корня проекта. Не забудьте скопировать .env.example в .env и заполнить переменные.
----
 Добрый день, сейчас я расскажу ход своих мыслей при решении задачи с разработкой ТГ Бота.
 
 1. Парсер (scraper.py)

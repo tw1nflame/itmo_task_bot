@@ -62,10 +62,11 @@ poetry run python scraper.py
 poetry run python build_index.py
 ```
 Это создаст папку faiss_index/ с индексом для быстрого поиска.
+
 5. После этого можно запускать Telegram-бота:
-    ```bash
-    poetry run python telegram_bot.py
-    ```
+```bash
+poetry run python telegram_bot.py
+```
 
 > **Важно:**  Есть возможность запуска через run_full_pipeline.py, но это неоптимально — оптимальнее выполнять этапы по отдельности, чтобы каждый раз не запускать процесс парсинга и индексации векторного хранилища.
 
